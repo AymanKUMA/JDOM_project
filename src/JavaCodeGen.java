@@ -40,6 +40,7 @@ public class JavaCodeGen {
 
     public static void main(String[] args) {
         try {
+            //change the path to your corresponding test.xml file
             String path = "C:\\Users\\aymane\\Desktop\\myfiles\\studies\\univ\\Master\\M1\\S2\\MI\\JDOM_Project\\test.xml";
             JavaCodeGen code = new JavaCodeGen(path);
             code.codeRunner();
