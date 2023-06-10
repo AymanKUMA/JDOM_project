@@ -1,0 +1,79 @@
+<classesDiagram>
+	<classes>
+        <class name="Building" visibility="public">
+            <associations>
+                <inheritance></inheritance>
+                <aggregations>
+					<aggregation>
+                        <name multiplicity="*" type="Appartement">app</name>
+                    </aggregation>
+                </aggregations>
+                <compositions>
+                </compositions>
+            </associations>
+            <attributes>
+                <attribute>
+                    <name type="String" visibility="private"  multiplicity="1">address</name>
+                </attribute>
+                <attribute>
+                    <name type="int" visibility="private"  multiplicity="20">a_table</name>
+                </attribute>
+            </attributes>
+            <methods>
+            </methods>
+        </class>
+		<class name="Appartement" visibility="public">
+            <associations>
+                <inheritance>Building</inheritance>
+                <aggregations>
+                    <aggregation>
+                        <name multiplicity="*" type="Furniture">furniture</name>
+                    </aggregation>
+                </aggregations>
+                <compositions>
+                    <composition>
+                        <name multiplicity="1" type="Room">kitchen</name>
+                    </composition>
+                    <composition>
+                        <name multiplicity="*" type="Room">bedrooms</name>
+                    </composition>
+                </compositions>
+            </associations>
+            <attributes>
+                <attribute>
+                    <name type="String" visibility="private" multiplicity="1">owner</name>
+                </attribute>
+                <attribute>
+                    <name type="int" visibility="private" multiplicity="1">floor</name>
+                </attribute>
+                <attribute>
+                    <name type="int" visibility="private" multiplicity="1">number</name>
+                </attribute>
+                <attribute>
+                    <name type="float" visibility="private" multiplicity="*">a_list</name>
+                </attribute>
+            </attributes>
+            <methods>
+				<method>
+					<name type="float" visibility="public" multiplicity="1">printFloor</name>
+					<arguments>
+						<argument multiplicity="1" type="int">floorNumber</argument>
+					</arguments>
+					<arguments>
+						<argument multiplicity="*" type="Appartement">appartements</argument>
+					</arguments>
+					<arguments>
+						<argument multiplicity="10" type="float">a_table</argument>
+					</arguments>
+				</method>
+				<method>
+					<name type="float" visibility="public" multiplicity="1">printOwner</name>
+					<arguments>
+						<argument multiplicity="*" type="String">ownerFirstName</argument>
+						<argument multiplicity="10" type="String">ownerLastName</argument>
+					</arguments>
+				</method>
+            </methods>
+		</class>
+	</classes>
+</classesDiagram>
