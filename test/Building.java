@@ -14,9 +14,19 @@ public class Building {
 	private List<Appartement> app;
 
 	//the Constructors
-	public Building(){
-		//empty constructor
+	public Building(List<Appartement> app){
+		this.app = app;
 	}
+	public Building(String address, int[] a_tableList<Appartement> app, ){
+		this.address = address;
+		if(a_table.length == 20){
+			this.a_table = a_table;
+		} else {
+			throw new IllegalArgumentException("The provided array must have exactly 20 elements.");
+		}
+		this.app = app;
+	}
+
 
 	//getters 
 

@@ -41,16 +41,17 @@ public class MethodsBuilder {
 
             Element method_arguments = method.getChild("arguments");
             //Append the visibility first to the code
-            methodsCode.append(method.getChildText("name")).
-                    append("(").append(argumentsBuilder(method_arguments)).
-                    append("){\n").
+            methodsCode.append(method.getChildText("name"));
+            methodsCode.append("(").append(argumentsBuilder2(method_arguments));
+            methodsCode.append("){\n").
                     append("\t\t//Method's body make sure to add the necessary code").
                     append("\n\t}\n");
         }
         return methodsCode;
     }
 
-    public static StringBuilder argumentsBuilder(Element arguments){
+
+    public static StringBuilder argumentsBuilder2(Element arguments){
         StringBuilder argumentsCode = new StringBuilder();
 
         List<Element> argumentsList = arguments.getChildren();
@@ -83,32 +84,111 @@ public class MethodsBuilder {
         return argumentsCode;
     }
 
+    public static StringBuilder argumentsBuilder(Element arguments){
+        StringBuilder argumentsCode = new StringBuilder();
+
+        List<Element> argumentsList = arguments.getChildren();
+        for (int i = 0; i < argumentsList.size(); i++) {
+            Element argument = argumentsList.get(i);
+            Element argument_name = argument.getChild("name");
+            Attribute argument_type = argument_name.getAttribute("type");
+            Attribute argument_multiplicity = argument_name.getAttribute("multiplicity");
+
+            // Get the multiplicity value to test upon it
+            String multiplicityValue = argument_multiplicity.getValue();
+
+            if ("*".equals(multiplicityValue)) {
+                argumentsCode.append("List<" + argument_type.getValue().toUpperCase().charAt(0) +
+                        argument_type.getValue().substring(1)
+                        + "> ");
+                argumentsCode.append(argument_name.getText());
+            } else if ("1".equals(multiplicityValue)) {
+                argumentsCode.append(argument_type.getValue() + " ");
+                argumentsCode.append(argument_name.getText());
+            } else {
+                argumentsCode.append(argument_type.getValue() + "[] ");
+                argumentsCode.append(argument_name.getText());
+            }
+
+            if (i < argumentsList.size() - 1) {
+                argumentsCode.append(", ");
+            }
+        }
+
+        return argumentsCode;
+    }
+
     //constructor builder
     public static StringBuilder constructorBuilder(Element currentClass,String classname, Boolean isInheritance) throws IOException, JDOMException{
         StringBuilder constructorCode = new StringBuilder();
         Element aggregations = currentClass.getChild("associations").
                 getChild("aggregations");
+        Element compositions = currentClass.getChild("associations").
+                getChild("compositions");
+        Element attributes = currentClass.getChild("attributes");
 
         constructorCode.append("\tpublic ").
                 append(classname).append("(");
-        System.out.println(aggregations.getChildren());
-        if (!aggregations.hasAdditionalNamespaces()) {
+
+        if (aggregations.getChildren().isEmpty()) {
             constructorCode.append("){\n").
                     append("\t\t//empty constructor\n").
-                    append("\t}");
+                    append("\t}\n");
         }
-        else {
+
+        else if (!aggregations.getChildren().isEmpty()){
             List<Element> aggregations_list = aggregations.getChildren();
-            for (Element aggregation : aggregations_list){
-                constructorCode.append(argumentsBuilder(aggregation)).
-                        append("){\n");
+            constructorCode.append(argumentsBuilder(aggregations)).
+                    append("){\n");
+            for (Element aggregation : aggregations_list) {
                 Element aggregation_name = aggregation.getChild("name");
                 Attribute multiplicity = aggregation_name.getAttribute("multiplicity");
                 constructorCode.append(generateMethodBody(aggregation, multiplicity));
             }
             constructorCode.append("\t}\n");
         }
-
+        constructorCode.append("\tpublic ").
+                append(classname).append("(");
+        if (!attributes.getChildren().isEmpty()){
+            constructorCode.append(argumentsBuilder(attributes));
+            if (!compositions.getChildren().isEmpty())
+                constructorCode.append(", ");
+        }
+        if (!compositions.getChildren().isEmpty()){
+            constructorCode.append(argumentsBuilder(compositions));
+            if (!aggregations.getChildren().isEmpty())
+                constructorCode.append(", ");
+        }
+        if (!aggregations.getChildren().isEmpty()) {
+            constructorCode.append(argumentsBuilder(aggregations));
+            constructorCode.append(", ");
+        }
+        constructorCode.append("){\n");
+        if (!attributes.getChildren().isEmpty()){
+            List<Element> attributes_list = attributes.getChildren();
+            for (Element attribute : attributes_list) {
+                Element attribute_name = attribute.getChild("name");
+                Attribute multiplicity = attribute_name.getAttribute("multiplicity");
+                constructorCode.append(generateMethodBody(attribute, multiplicity));
+            }
+        }
+        if (!compositions.getChildren().isEmpty()){
+            List<Element> compositions_list = compositions.getChildren();
+            for (Element composition : compositions_list) {
+                Element composition_name = composition.getChild("name");
+                Attribute multiplicity = composition_name.getAttribute("multiplicity");
+                constructorCode.append(generateMethodBody(composition, multiplicity));
+            }
+        }
+        if (!aggregations.getChildren().isEmpty()){
+            List<Element> aggregations_list = aggregations.getChildren();
+            for (Element aggregation : aggregations_list) {
+                Element aggregation_name = aggregation.getChild("name");
+                Attribute multiplicity = aggregation_name.getAttribute("multiplicity");
+                constructorCode.append(generateMethodBody(aggregation, multiplicity));
+            }
+        }
+        constructorCode.append("\t}\n");
         return constructorCode;
     }
     public static StringBuilder getterBuilder(Element attribute) throws IOException, JDOMException {

@@ -4,7 +4,7 @@
             <associations>
                 <inheritance></inheritance>
                 <aggregations>
-					<aggregation>
+		    <aggregation>
                         <name multiplicity="*" type="Appartement">app</name>
                     </aggregation>
                 </aggregations>

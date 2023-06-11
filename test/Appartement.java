@@ -20,6 +20,15 @@ public class Appartement extends Building {
 	public Appartement(){
 		//empty constructor
 	}
+	public Appartement(String owner, int floor, int number, List<Float> a_list, Room kitchen, List<Room> bedrooms){
+		this.owner = owner;
+		this.floor = floor;
+		this.number = number;
+		this.a_list = a_list;
+		this.kitchen = kitchen;
+		this.bedrooms = bedrooms;
+	}
+
 
 	//getters 
 

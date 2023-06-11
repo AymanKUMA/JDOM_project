@@ -15,6 +15,9 @@ public class A {
 	public A(){
 		//empty constructor
 	}
+	public A(){
+	}
+
 
 	//getters 
 
