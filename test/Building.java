@@ -1,5 +1,4 @@
 public class Building {
-		//the Constructors 
 
 
 	//Attributes 
@@ -14,6 +13,10 @@ public class Building {
 	//aggregations
 	private List<Appartement> app;
 
+	//the Constructors
+	public Building(){
+		//empty constructor
+	}
 
 	//getters 
 

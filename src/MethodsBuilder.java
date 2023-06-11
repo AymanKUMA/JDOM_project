@@ -84,16 +84,29 @@ public class MethodsBuilder {
     }
 
     //constructor builder
-    public static StringBuilder constructorBuilder(Element currentClass,Attribute name, Boolean isInheritance) throws IOException, JDOMException{
+    public static StringBuilder constructorBuilder(Element currentClass,String classname, Boolean isInheritance) throws IOException, JDOMException{
         StringBuilder constructorCode = new StringBuilder();
         Element aggregations = currentClass.getChild("associations").
                 getChild("aggregations");
 
-        constructorCode.append("\npublic ").
-                append(name).append("(");
-        if (aggregations != null){
-            constructorCode.append(argumentsBuilder(aggregations)).
-                    append("){\n");
+        constructorCode.append("\tpublic ").
+                append(classname).append("(");
+        System.out.println(aggregations.getChildren());
+        if (!aggregations.hasAdditionalNamespaces()) {
+            constructorCode.append("){\n").
+                    append("\t\t//empty constructor\n").
+                    append("\t}");
+        }
+        else {
+            List<Element> aggregations_list = aggregations.getChildren();
+            for (Element aggregation : aggregations_list){
+                constructorCode.append(argumentsBuilder(aggregation)).
+                        append("){\n");
+                Element aggregation_name = aggregation.getChild("name");
+                Attribute multiplicity = aggregation_name.getAttribute("multiplicity");
+                constructorCode.append(generateMethodBody(aggregation, multiplicity));
+            }
+            constructorCode.append("\t}\n");
         }
 
         return constructorCode;

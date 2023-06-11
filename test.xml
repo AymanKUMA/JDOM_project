@@ -26,9 +26,6 @@
             <associations>
                 <inheritance>Building</inheritance>
                 <aggregations>
-                    <aggregation>
-                        <name multiplicity="*" type="Furniture">furniture</name>
-                    </aggregation>
                 </aggregations>
                 <compositions>
                     <composition>
@@ -74,6 +71,19 @@
 					</arguments>
 				</method>
             </methods>
+		</class>
+		<class name="A" visibility="public">
+			<associations>
+				<inheritance></inheritance>
+				<aggregations>
+				</aggregations>
+                <compositions>
+                </compositions>
+			</associations>
+			<attributes>
+			</attributes>
+			<methods>
+			</methods>
 		</class>
 	</classes>
 </classesDiagram>

@@ -1,5 +1,4 @@
 public class Appartement extends Building {
-		//the Constructors 
 
 
 	//Attributes 
@@ -15,8 +14,12 @@ public class Appartement extends Building {
 
 
 	//aggregations
-	private List<Furniture> furniture;
+	//No aggregations
 
+	//the Constructors
+	public Appartement(){
+		//empty constructor
+	}
 
 	//getters 
 

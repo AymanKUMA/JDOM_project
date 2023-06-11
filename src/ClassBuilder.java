@@ -50,8 +50,6 @@ public class ClassBuilder {
             }
 
             classCode.append(" {\n");
-            //the constructor
-            classCode.append("\t\t//the Constructors \n");
 
             //Here we append the attributes, composition, aggregations, and the methods
 
@@ -63,6 +61,10 @@ public class ClassBuilder {
 
             classCode.append("\n\n\t//aggregations\n");
             classCode.append(AggregationBuilder.aggregationAttributeBuilder(associations));
+
+            //the constructor
+            classCode.append("\n\t//the Constructors\n");
+            classCode.append(MethodsBuilder.constructorBuilder(currentClass, className, isInheritance));
 
             //attributes getters
             classCode.append("\n\n\t//getters \n");
